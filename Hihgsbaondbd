@@ -217,7 +217,7 @@ local function farmPoteLoop()
                     if prompt and prompt.Enabled and State.rootPart then
                         local targetPos = planta:IsA("Model") and planta:GetPivot().Position or planta.Position
                         targetPos = targetPos + Vector3.new(0, 5, 0)
-                        local tween = TweenService:Create(State.rootPart, TweenInfo.new(0.8, Enum.EasingStyle.Linear), {CFrame = CFrame.new(targetPos)})
+                        local tween = TweenService:Create(State.rootPart, TweenInfo.new(1.5, Enum.EasingStyle.Linear), {CFrame = CFrame.new(targetPos)})
                         tween:Play()
                         tween.Completed:Wait()
 
