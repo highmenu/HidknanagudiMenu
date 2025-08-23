@@ -1,0 +1,243 @@
+-- 🌟 High Menu | Ilha Bela Roleplay
+-- Versão avançada com Farm Pote em sequência de fileiras ignorando "Vendedor"
+
+local Players = game:GetService("Players")
+local UserInputService = game:GetService("UserInputService")
+local RunService = game:GetService("RunService")
+local TeleportService = game:GetService("TeleportService")
+local TweenService = game:GetService("TweenService")
+
+workspace.FallenPartsDestroyHeight = -math.huge
+
+-- UI Library
+local Library
+pcall(function()
+    Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/tbao143/Library-ui/refs/heads/main/Redzhubui"))()
+end)
+
+if not Library then
+    game:GetService("StarterGui"):SetCore("SendNotification", {
+        Title = "Erro",
+        Text = "Falha ao carregar UI Library!",
+        Duration = 5
+    })
+    return
+end
+
+-- Estado geral
+local State = {
+    player = Players.LocalPlayer,
+    character = nil,
+    humanoid = nil,
+    rootPart = nil,
+
+    farmActive = false,
+
+    settings = {
+        walkSpeed = 16,
+    },
+
+    movement = {
+        noclipActive = false,
+        infiniteJumpActive = false,
+        connections = {},
+    }
+}
+
+-- Atualizar personagem
+local function updateCharacter()
+    State.character = State.player.Character or State.player.CharacterAdded:Wait()
+
+    if State.character then
+        State.humanoid = State.character:WaitForChild("Humanoid", 5)
+        State.rootPart = State.character:WaitForChild("HumanoidRootPart", 5)
+
+        if State.humanoid then
+            State.humanoid.WalkSpeed = State.settings.walkSpeed
+        end
+    end
+
+    return State.character and State.humanoid and State.rootPart
+end
+
+State.player.CharacterAdded:Connect(function()
+    task.wait(1)
+    updateCharacter()
+end)
+
+updateCharacter()
+
+-- 🪟 MENU
+local Window = Library:MakeWindow({
+    Title = "High Menu | Ilha Bela Roleplay",
+    SubTitle = "by: Keef (Farm Pote)",
+    LoadText = "Carregando sistema...",
+    Flags = "HighMenu_IlhaBela"
+})
+
+Window:AddMinimizeButton({
+    Button = { Image = "rbxassetid://92698440248050", BackgroundTransparency = 0 },
+    Corner = { CornerRadius = UDim.new(0, 35) },
+})
+
+-- 📑 INFO
+local InfoTab = Window:MakeTab({ Title = "Info", Icon = "rbxassetid://77991697673856" })
+InfoTab:AddSection({ "Informações do Sistema" })
+InfoTab:AddParagraph({ "Versão:", "High Menu v2.0 Farm Pote Fileira" })
+InfoTab:AddParagraph({ "Jogo:", "Ilha Bela Roleplay" })
+InfoTab:AddParagraph({ "Status:", "Sistema Farm Pote Ativo" })
+
+InfoTab:AddButton({
+    Name = "Reconectar ao Servidor",
+    Callback = function()
+        TeleportService:TeleportToPlaceInstance(game.PlaceId, game.JobId, State.player)
+    end
+})
+
+InfoTab:AddButton({
+    Name = "Buscar Novo Servidor",
+    Callback = function()
+        TeleportService:Teleport(game.PlaceId, State.player)
+    end
+})
+
+-- ⚡ MOVIMENTO
+local MovementTab = Window:MakeTab({ Title = "Movement", Icon = "rbxassetid://112065172702553" })
+MovementTab:AddSection({ "Controles de Movimento" })
+
+-- Noclip
+function activateNoclip(enabled)
+    State.movement.noclipActive = enabled
+
+    if enabled then
+        State.movement.connections.noclip = RunService.Stepped:Connect(function()
+            if State.character then
+                for _, part in pairs(State.character:GetChildren()) do
+                    if part:IsA("BasePart") and part.Name ~= "HumanoidRootPart" then
+                        part.CanCollide = false
+                    end
+                end
+            end
+        end)
+    else
+        if State.movement.connections.noclip then
+            State.movement.connections.noclip:Disconnect()
+            State.movement.connections.noclip = nil
+        end
+
+        if State.character then
+            for _, part in pairs(State.character:GetChildren()) do
+                if part:IsA("BasePart") and part.Name ~= "HumanoidRootPart" then
+                    part.CanCollide = true
+                end
+            end
+        end
+    end
+end
+
+MovementTab:AddToggle({
+    Name = "Noclip Melhorado",
+    Default = false,
+    Callback = activateNoclip
+})
+
+-- Pulo Infinito
+function activateInfiniteJump(enabled)
+    State.movement.infiniteJumpActive = enabled
+
+    if enabled then
+        State.movement.connections.jump = UserInputService.JumpRequest:Connect(function()
+            if State.movement.infiniteJumpActive then
+                updateCharacter()
+                if State.humanoid then
+                    State.humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+                end
+            end
+        end)
+    else
+        if State.movement.connections.jump then
+            State.movement.connections.jump:Disconnect()
+            State.movement.connections.jump = nil
+        end
+    end
+end
+
+MovementTab:AddToggle({
+    Name = "Pulo Infinito",
+    Default = false,
+    Callback = activateInfiniteJump
+})
+
+MovementTab:AddSlider({
+    Name = "Velocidade Caminhada",
+    Min = 16,
+    Max = 500,
+    Default = 16,
+    Callback = function(value)
+        State.settings.walkSpeed = value
+        updateCharacter()
+        if State.humanoid then
+            State.humanoid.WalkSpeed = value
+        end
+    end
+})
+
+-- 🌱 FARM POTE FILEIRA IGNORANDO VENDEDOR
+local FarmTab = Window:MakeTab({ Title = "Farm", Icon = "rbxassetid://81812366414231" })
+FarmTab:AddSection({ "Sistema de Farm Pote Automático por Fileira" })
+
+local function farmPoteLoop()
+    while State.farmActive do
+        pcall(function()
+            local plantFolder = workspace:FindFirstChild("Construcoes") and workspace.Construcoes:FindFirstChild("Plantinha_Ilegal")
+            if plantFolder then
+                -- Pega todas as plantinhas válidas
+                local plants = {}
+                for _, planta in pairs(plantFolder:GetChildren()) do
+                    if planta.Name ~= "Vendedor" and (planta:IsA("Model") or planta:IsA("Part")) and planta:FindFirstChildWhichIsA("ProximityPrompt", true) then
+                        table.insert(plants, planta)
+                    end
+                end
+
+                -- Ordena as plantas por Z (fileira) e depois X (posição na fileira)
+                table.sort(plants, function(a, b)
+                    local aPos = a:IsA("Model") and a:GetPivot().Position or a.Position
+                    local bPos = b:IsA("Model") and b:GetPivot().Position or b.Position
+                    if aPos.Z == bPos.Z then
+                        return aPos.X < bPos.X
+                    else
+                        return aPos.Z < bPos.Z
+                    end
+                end)
+
+                -- Coleta planta por planta na sequência
+                for _, planta in ipairs(plants) do
+                    if not State.farmActive then break end
+                    local prompt = planta:FindFirstChildWhichIsA("ProximityPrompt", true)
+                    if prompt and prompt.Enabled and State.rootPart then
+                        local targetPos = planta:IsA("Model") and planta:GetPivot().Position or planta.Position
+                        targetPos = targetPos + Vector3.new(0, 5, 0)
+                        local tween = TweenService:Create(State.rootPart, TweenInfo.new(0.8, Enum.EasingStyle.Linear), {CFrame = CFrame.new(targetPos)})
+                        tween:Play()
+                        tween.Completed:Wait()
+
+                        fireproximityprompt(prompt)
+                        task.wait(6) -- espera animação de coleta
+                    end
+                end
+            end
+        end)
+        task.wait(0.5)
+    end
+end
+
+FarmTab:AddToggle({
+    Name = "Farm Pote Fileira (com Fly)",
+    Default = false,
+    Callback = function(state)
+        State.farmActive = state
+        if state then
+            task.spawn(farmPoteLoop)
+        end
+    end
+})
