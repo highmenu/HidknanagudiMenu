@@ -1,6 +1,3 @@
--- 🌟 High Menu | Ilha Bela Roleplay
--- Versão simplificada (Farm Pote com altura segura no voo)
-
 local Players = game:GetService("Players")
 local UserInputService = game:GetService("UserInputService")
 local RunService = game:GetService("RunService")
@@ -9,7 +6,6 @@ local TweenService = game:GetService("TweenService")
 
 workspace.FallenPartsDestroyHeight = -math.huge
 
--- UI Library
 local Library
 pcall(function()
     Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/tbao143/Library-ui/refs/heads/main/Redzhubui"))()
@@ -24,40 +20,27 @@ if not Library then
     return
 end
 
--- Estado geral
 local State = {
     player = Players.LocalPlayer,
     character = nil,
     humanoid = nil,
     rootPart = nil,
-
     farmActive = false,
-
     settings = {
         walkSpeed = 16,
-        flySpeed = 0.5 -- velocidade do voo entre plantas (fixa)
-    },
-
-    movement = {
-        noclipActive = false,
-        infiniteJumpActive = false,
-        connections = {},
+        flySpeed = 0.5
     }
 }
 
--- Atualizar personagem
 local function updateCharacter()
     State.character = State.player.Character or State.player.CharacterAdded:Wait()
-
     if State.character then
         State.humanoid = State.character:WaitForChild("Humanoid", 5)
         State.rootPart = State.character:WaitForChild("HumanoidRootPart", 5)
-
         if State.humanoid then
             State.humanoid.WalkSpeed = State.settings.walkSpeed
         end
     end
-
     return State.character and State.humanoid and State.rootPart
 end
 
@@ -68,7 +51,6 @@ end)
 
 updateCharacter()
 
--- 🪟 MENU
 local Window = Library:MakeWindow({
     Title = "High Menu | Ilha Bela Roleplay",
     SubTitle = "by: Keef (Farm Pote)",
@@ -81,7 +63,6 @@ Window:AddMinimizeButton({
     Corner = { CornerRadius = UDim.new(0, 35) },
 })
 
--- 📑 INFO
 local InfoTab = Window:MakeTab({ Title = "Info", Icon = "rbxassetid://77991697673856" })
 InfoTab:AddSection({ "Informações do Sistema" })
 InfoTab:AddParagraph({ "Versão:", "High Menu v2.1 Farm Pote" })
@@ -102,72 +83,8 @@ InfoTab:AddButton({
     end
 })
 
--- ⚡ MOVIMENTO
 local MovementTab = Window:MakeTab({ Title = "Movement", Icon = "rbxassetid://112065172702553" })
 MovementTab:AddSection({ "Controles de Movimento" })
-
--- Noclip
-function activateNoclip(enabled)
-    State.movement.noclipActive = enabled
-
-    if enabled then
-        State.movement.connections.noclip = RunService.Stepped:Connect(function()
-            if State.character then
-                for _, part in pairs(State.character:GetChildren()) do
-                    if part:IsA("BasePart") and part.Name ~= "HumanoidRootPart" then
-                        part.CanCollide = false
-                    end
-                end
-            end
-        end)
-    else
-        if State.movement.connections.noclip then
-            State.movement.connections.noclip:Disconnect()
-            State.movement.connections.noclip = nil
-        end
-
-        if State.character then
-            for _, part in pairs(State.character:GetChildren()) do
-                if part:IsA("BasePart") and part.Name ~= "HumanoidRootPart" then
-                    part.CanCollide = true
-                end
-            end
-        end
-    end
-end
-
-MovementTab:AddToggle({
-    Name = "Noclip Melhorado",
-    Default = false,
-    Callback = activateNoclip
-})
-
--- Pulo Infinito
-function activateInfiniteJump(enabled)
-    State.movement.infiniteJumpActive = enabled
-
-    if enabled then
-        State.movement.connections.jump = UserInputService.JumpRequest:Connect(function()
-            if State.movement.infiniteJumpActive then
-                updateCharacter()
-                if State.humanoid then
-                    State.humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
-                end
-            end
-        end)
-    else
-        if State.movement.connections.jump then
-            State.movement.connections.jump:Disconnect()
-            State.movement.connections.jump = nil
-        end
-    end
-end
-
-MovementTab:AddToggle({
-    Name = "Pulo Infinito",
-    Default = false,
-    Callback = activateInfiniteJump
-})
 
 MovementTab:AddSlider({
     Name = "Velocidade Caminhada",
@@ -183,11 +100,9 @@ MovementTab:AddSlider({
     end
 })
 
--- 🌱 FARM POTE
 local FarmTab = Window:MakeTab({ Title = "Farm", Icon = "rbxassetid://81812366414231" })
 FarmTab:AddSection({ "Sistema de Farm Pote Automático" })
 
--- Helpers para posição (funciona para Model e Part/BasePart)
 local function getPlantaPos(planta)
     if planta:IsA("Model") then
         return planta:GetPivot().Position
@@ -197,7 +112,6 @@ local function getPlantaPos(planta)
     return nil
 end
 
--- Organiza as plantas em fileiras (Z) e colunas (X) → 1..6 por fileira
 local function getPlantasOrdenadas()
     local plantFolder = workspace:FindFirstChild("Construcoes") and workspace.Construcoes:FindFirstChild("Plantinha_Ilegal")
     if not plantFolder then return {} end
@@ -236,7 +150,6 @@ local function getPlantasOrdenadas()
     return ordenadas
 end
 
--- Loop de farm (voo fixo 1.5s por salto; altura segura +7)
 local function farmPoteLoop()
     while State.farmActive do
         pcall(function()
@@ -254,9 +167,8 @@ local function farmPoteLoop()
                     )
                     tween:Play()
                     tween.Completed:Wait()
-
                     fireproximityprompt(prompt)
-                    task.wait(6) -- tempo da animação/colheita
+                    task.wait(6)
                 end
             end
         end)
@@ -264,7 +176,6 @@ local function farmPoteLoop()
     end
 end
 
--- Guarda/restaura HipHeight só durante o Farm, para evitar morte ao tocar o chão
 local originalHipHeight
 
 FarmTab:AddToggle({
@@ -275,7 +186,6 @@ FarmTab:AddToggle({
         if state then
             if State.humanoid then
                 originalHipHeight = State.humanoid.HipHeight
-                -- eleva levemente o pé do personagem para evitar "morte ao encostar no chão"
                 pcall(function()
                     State.humanoid.HipHeight = (originalHipHeight or 2) + 2
                 end)
