@@ -1,5 +1,5 @@
 -- 🌟 High Menu | Ilha Bela Roleplay
--- Versão avançada com Farm Pote em sequência de fileiras ignorando "Vendedor"
+-- Versão simplificada (Farm Pote com altura segura no voo)
 
 local Players = game:GetService("Players")
 local UserInputService = game:GetService("UserInputService")
@@ -35,6 +35,7 @@ local State = {
 
     settings = {
         walkSpeed = 16,
+        flySpeed = 0.5 -- velocidade do voo entre plantas (fixa)
     },
 
     movement = {
@@ -83,7 +84,7 @@ Window:AddMinimizeButton({
 -- 📑 INFO
 local InfoTab = Window:MakeTab({ Title = "Info", Icon = "rbxassetid://77991697673856" })
 InfoTab:AddSection({ "Informações do Sistema" })
-InfoTab:AddParagraph({ "Versão:", "High Menu v2.0 Farm Pote Fileira" })
+InfoTab:AddParagraph({ "Versão:", "High Menu v2.1 Farm Pote" })
 InfoTab:AddParagraph({ "Jogo:", "Ilha Bela Roleplay" })
 InfoTab:AddParagraph({ "Status:", "Sistema Farm Pote Ativo" })
 
@@ -182,62 +183,110 @@ MovementTab:AddSlider({
     end
 })
 
--- 🌱 FARM POTE FILEIRA IGNORANDO VENDEDOR
+-- 🌱 FARM POTE
 local FarmTab = Window:MakeTab({ Title = "Farm", Icon = "rbxassetid://81812366414231" })
-FarmTab:AddSection({ "Sistema de Farm Pote Automático por Fileira" })
+FarmTab:AddSection({ "Sistema de Farm Pote Automático" })
 
+-- Helpers para posição (funciona para Model e Part/BasePart)
+local function getPlantaPos(planta)
+    if planta:IsA("Model") then
+        return planta:GetPivot().Position
+    elseif planta:IsA("BasePart") or planta:IsA("Part") then
+        return planta.Position
+    end
+    return nil
+end
+
+-- Organiza as plantas em fileiras (Z) e colunas (X) → 1..6 por fileira
+local function getPlantasOrdenadas()
+    local plantFolder = workspace:FindFirstChild("Construcoes") and workspace.Construcoes:FindFirstChild("Plantinha_Ilegal")
+    if not plantFolder then return {} end
+
+    local fileiras, zAcum, BIN = {}, {}, 10
+    for _, planta in ipairs(plantFolder:GetChildren()) do
+        if (planta:IsA("Model") or planta:IsA("BasePart") or planta:IsA("Part")) and planta.Name ~= "Vendedor" then
+            local pos = getPlantaPos(planta)
+            if pos then
+                local key = math.floor(pos.Z / BIN + 0.5)
+                fileiras[key] = fileiras[key] or {}
+                table.insert(fileiras[key], planta)
+                zAcum[key] = (zAcum[key] or 0) + pos.Z
+            end
+        end
+    end
+
+    local keys = {}
+    for k, list in pairs(fileiras) do
+        zAcum[k] = zAcum[k] / #list
+        table.insert(keys, k)
+    end
+    table.sort(keys, function(a, b) return zAcum[a] < zAcum[b] end)
+
+    local ordenadas = {}
+    for _, k in ipairs(keys) do
+        table.sort(fileiras[k], function(a, b)
+            local ax, bx = getPlantaPos(a).X, getPlantaPos(b).X
+            return ax < bx
+        end)
+        for _, p in ipairs(fileiras[k]) do
+            table.insert(ordenadas, p)
+        end
+    end
+
+    return ordenadas
+end
+
+-- Loop de farm (voo fixo 1.5s por salto; altura segura +7)
 local function farmPoteLoop()
     while State.farmActive do
         pcall(function()
-            local plantFolder = workspace:FindFirstChild("Construcoes") and workspace.Construcoes:FindFirstChild("Plantinha_Ilegal")
-            if plantFolder then
-                -- Pega todas as plantinhas válidas
-                local plants = {}
-                for _, planta in pairs(plantFolder:GetChildren()) do
-                    if planta.Name ~= "Vendedor" and (planta:IsA("Model") or planta:IsA("Part")) and planta:FindFirstChildWhichIsA("ProximityPrompt", true) then
-                        table.insert(plants, planta)
-                    end
-                end
+            local plantas = getPlantasOrdenadas()
+            for _, planta in ipairs(plantas) do
+                if not State.farmActive then break end
+                local prompt = planta:FindFirstChildWhichIsA("ProximityPrompt", true)
+                local pos = getPlantaPos(planta)
+                if prompt and prompt.Enabled and State.rootPart and pos then
+                    local targetPos = pos + Vector3.new(0, 7, 0)
+                    local tween = TweenService:Create(
+                        State.rootPart,
+                        TweenInfo.new(State.settings.flySpeed, Enum.EasingStyle.Linear),
+                        { CFrame = CFrame.new(targetPos) }
+                    )
+                    tween:Play()
+                    tween.Completed:Wait()
 
-                -- Ordena as plantas por Z (fileira) e depois X (posição na fileira)
-                table.sort(plants, function(a, b)
-                    local aPos = a:IsA("Model") and a:GetPivot().Position or a.Position
-                    local bPos = b:IsA("Model") and b:GetPivot().Position or b.Position
-                    if aPos.Z == bPos.Z then
-                        return aPos.X < bPos.X
-                    else
-                        return aPos.Z < bPos.Z
-                    end
-                end)
-
-                -- Coleta planta por planta na sequência
-                for _, planta in ipairs(plants) do
-                    if not State.farmActive then break end
-                    local prompt = planta:FindFirstChildWhichIsA("ProximityPrompt", true)
-                    if prompt and prompt.Enabled and State.rootPart then
-                        local targetPos = planta:IsA("Model") and planta:GetPivot().Position or planta.Position
-                        targetPos = targetPos + Vector3.new(0, 5, 0)
-                        local tween = TweenService:Create(State.rootPart, TweenInfo.new(1.5, Enum.EasingStyle.Linear), {CFrame = CFrame.new(targetPos)})
-                        tween:Play()
-                        tween.Completed:Wait()
-
-                        fireproximityprompt(prompt)
-                        task.wait(6) -- espera animação de coleta
-                    end
+                    fireproximityprompt(prompt)
+                    task.wait(6) -- tempo da animação/colheita
                 end
             end
         end)
-        task.wait(0.5)
+        task.wait(1)
     end
 end
 
+-- Guarda/restaura HipHeight só durante o Farm, para evitar morte ao tocar o chão
+local originalHipHeight
+
 FarmTab:AddToggle({
-    Name = "Farm Pote Fileira (com Fly)",
+    Name = "Farm Pote (com Fly)",
     Default = false,
     Callback = function(state)
         State.farmActive = state
         if state then
+            if State.humanoid then
+                originalHipHeight = State.humanoid.HipHeight
+                -- eleva levemente o pé do personagem para evitar "morte ao encostar no chão"
+                pcall(function()
+                    State.humanoid.HipHeight = (originalHipHeight or 2) + 2
+                end)
+            end
             task.spawn(farmPoteLoop)
+        else
+            if State.humanoid and originalHipHeight ~= nil then
+                pcall(function()
+                    State.humanoid.HipHeight = originalHipHeight
+                end)
+            end
         end
     end
 })
