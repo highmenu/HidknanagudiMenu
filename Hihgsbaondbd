@@ -53,21 +53,21 @@ updateCharacter()
 
 local Window = Library:MakeWindow({
     Title = "High Menu | Ilha Bela Roleplay",
-    SubTitle = "by: Keef (Farm Pote)",
+    SubTitle = "by: drk.on",
     LoadText = "Carregando sistema...",
     Flags = "HighMenu_IlhaBela"
 })
 
 Window:AddMinimizeButton({
-    Button = { Image = "rbxassetid://92698440248050", BackgroundTransparency = 0 },
+    Button = { Image = "rbxassetid://72285328408420", BackgroundTransparency = 0 },
     Corner = { CornerRadius = UDim.new(0, 35) },
 })
 
 local InfoTab = Window:MakeTab({ Title = "Info", Icon = "rbxassetid://77991697673856" })
 InfoTab:AddSection({ "Informações do Sistema" })
-InfoTab:AddParagraph({ "Versão:", "High Menu v2.1 Farm Pote" })
+InfoTab:AddParagraph({ "Versão:", "Beta" })
 InfoTab:AddParagraph({ "Jogo:", "Ilha Bela Roleplay" })
-InfoTab:AddParagraph({ "Status:", "Sistema Farm Pote Ativo" })
+InfoTab:AddParagraph({ "Status:", "Sistema Otimizado" })
 
 InfoTab:AddButton({
     Name = "Reconectar ao Servidor",
@@ -89,7 +89,7 @@ MovementTab:AddSection({ "Controles de Movimento" })
 MovementTab:AddSlider({
     Name = "Velocidade Caminhada",
     Min = 16,
-    Max = 500,
+    Max = 150,
     Default = 16,
     Callback = function(value)
         State.settings.walkSpeed = value
@@ -179,7 +179,7 @@ end
 local originalHipHeight
 
 FarmTab:AddToggle({
-    Name = "Farm Pote (com Fly)",
+    Name = "Farm Pote",
     Default = false,
     Callback = function(state)
         State.farmActive = state
