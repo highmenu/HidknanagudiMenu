@@ -1,310 +1,433 @@
--- [Proteção de Script Avançada]
-local _0x1a2b3c = {
-    [0x1] = function(n) return string.char(n) end,
-    [0x2] = function() return math.random(50, 150) / 1000 end,
-    [0x3] = function(s) local r = "" for i = 1, #s do r = r .. string.char(s:byte(i) - 1) end return r end,
-    [0x4] = setmetatable({}, {__mode = "kv"}),
-    [0x5] = {}
-}
+-- Sistema de proteção avançado contra detecção
+task.wait(math.random(200, 500) / 100)
 
-local function _0xA1B2C3(n)
-    if not _0x1a2b3c[0x5][n] then
-        task.wait(_0x1a2b3c[0x2]() / 10)
-        _0x1a2b3c[0x5][n] = game:GetService(n)
+-- Verificação de ambiente seguro
+local function checkEnv()
+    local suspicious = {
+        "HttpSpy", "SimpleSpy", "RemoteSpy", "DEX", "Explorer",
+        "InjectionCheck", "AntiCheat", "Security", "Detection"
+    }
+    
+    for _, name in ipairs(suspicious) do
+        if game:FindFirstChild(name) or workspace:FindFirstChild(name) then
+            return false
+        end
     end
-    return _0x1a2b3c[0x5][n]
+    return true
 end
 
-local _0xDEADBEEF = {
-    ["\80\108\97\121\101\114\115"] = _0xA1B2C3(_0x1a2b3c[0x3]("\81\109\98\122\102\115\116")),
-    ["\85\115\101\114\73\110\112\117\116\83\101\114\118\105\99\101"] = _0xA1B2C3(_0x1a2b3c[0x3]("\86\116\102\115\74\111\113\118\117\84\102\115\119\106\100\102")),
-    ["\82\117\110\83\101\114\118\105\99\101"] = _0xA1B2C3(_0x1a2b3c[0x3]("\83\118\111\84\102\115\119\106\100\102")),
-    ["\84\101\108\101\112\111\114\116\83\101\114\118\105\99\101"] = _0xA1B2C3(_0x1a2b3c[0x3]("\85\102\109\102\113\112\115\117\84\102\115\119\106\100\102")),
-    ["\84\119\101\101\110\83\101\114\118\105\99\101"] = _0xA1B2C3(_0x1a2b3c[0x3]("\85\120\102\102\111\84\102\115\119\106\100\102"))
+if not checkEnv() then
+    task.wait(math.random(500, 1000) / 100)
+    return
+end
+
+-- Proteção de carregamento graduado
+local loadSteps = 0
+local maxSteps = 5
+
+local function secureWait()
+    loadSteps = loadSteps + 1
+    task.wait(math.random(100 + (loadSteps * 50), 300 + (loadSteps * 100)) / 100)
+    return loadSteps <= maxSteps
+end
+
+if not secureWait() then return end
+
+-- Obfuscação de referências críticas
+local refs = {}
+local mt = {
+    __index = function(t, k)
+        if not rawget(t, k) then
+            task.wait(math.random(10, 50) / 1000)
+            rawset(t, k, game:GetService(k))
+        end
+        return rawget(t, k)
+    end
+}
+setmetatable(refs, mt)
+
+if not secureWait() then return end
+
+-- Strings codificadas com múltiplas camadas
+local function decode(s, shift)
+    local r = ""
+    shift = shift or 1
+    for i = 1, #s do
+        r = r .. string.char(s:byte(i) - shift)
+    end
+    return r
+end
+
+local strings = {
+    players = decode("\81\109\98\122\102\115\116"),
+    ui = decode("\85\116\102\115\74\111\113\118\117\84\102\115\119\106\100\102"),
+    run = decode("\83\118\111\84\102\115\119\106\100\102"),
+    tele = decode("\85\102\109\102\113\112\115\117\84\102\115\119\106\100\102"),
+    tween = decode("\85\120\102\102\111\84\102\115\119\106\100\102"),
+    starter = decode("\84\117\98\115\117\102\115\72\118\106"),
+    height = decode("\71\98\109\109\102\111\81\98\115\117\116\69\102\116\117\115\112\122\73\102\106\104\105\117")
 }
 
-local Players = _0xDEADBEEF["\80\108\97\121\101\114\115"]
-local UserInputService = _0xDEADBEEF["\85\115\101\114\73\110\112\117\116\83\101\114\118\105\99\101"]
-local RunService = _0xDEADBEEF["\82\117\110\83\101\114\118\105\99\101"]
-local TeleportService = _0xDEADBEEF["\84\101\108\101\112\111\114\116\83\101\114\118\105\99\101"]
-local TweenService = _0xDEADBEEF["\84\119\101\101\110\83\101\114\118\105\99\101"]
+if not secureWait() then return end
 
+-- Acesso protegido aos serviços
+local Services = {}
+for name, decoded in pairs(strings) do
+    if name ~= "height" then
+        task.spawn(function()
+            task.wait(math.random(10, 100) / 1000)
+            pcall(function()
+                Services[name] = refs[decoded]
+            end)
+        end)
+    end
+end
+
+task.wait(math.random(100, 300) / 1000)
+
+-- Configuração de workspace com proteção temporal
 task.spawn(function()
-    task.wait(_0x1a2b3c[0x2]())
-    pcall(function()
-        workspace[_0x1a2b3c[0x3]("\71\98\109\109\102\111\81\98\115\117\116\69\102\116\117\115\112\122\73\102\106\104\105\117")] = -math.huge
-    end)
+    local attempts = 0
+    repeat
+        attempts = attempts + 1
+        task.wait(math.random(200, 400) / 1000)
+        pcall(function()
+            workspace[strings.height] = -math.huge
+        end)
+    until attempts >= 3
 end)
 
-local _0xF00DFACE
-local _0x12345678 = 0
+if not secureWait() then return end
 
-repeat
-    _0x12345678 = _0x12345678 + 1
-    task.wait(_0x1a2b3c[0x2]())
-    pcall(function()
-        local _0xURL = "\104\116\116\112\115\58\47\47\114\97\119\46\103\105\116\104\117\98\117\115\101\114\99\111\110\116\101\110\116\46\99\111\109\47\116\98\97\111\49\52\51\47\76\105\98\114\97\114\121\45\117\105\47\114\101\102\115\47\104\101\97\100\115\47\109\97\105\110\47\82\101\100\122\104\117\98\117\105"
-        local _0xREQ = game:HttpGet(_0xURL)
-        if _0xREQ then
-            _0xF00DFACE = loadstring(_0xREQ)()
+-- Carregamento da biblioteca com múltiplas tentativas e camuflagem
+local Library
+local libAttempts = 0
+
+local function loadLib()
+    return pcall(function()
+        -- URL ofuscada
+        local parts = {
+            "https://raw.githubuserc",
+            "ontent.com/tbao143/Lib",
+            "rary-ui/refs/heads/m",
+            "ain/Redzhubui"
+        }
+        
+        local url = table.concat(parts)
+        local req = game:HttpGet(url)
+        if req and #req > 100 then
+            Library = loadstring(req)()
+            return true
         end
+        return false
     end)
-until _0xF00DFACE or _0x12345678 >= 3
+end
 
-if not _0xF00DFACE then
+-- Tentativas com delays crescentes
+repeat
+    libAttempts = libAttempts + 1
+    task.wait(math.random(300 + (libAttempts * 200), 800 + (libAttempts * 400)) / 1000)
+    loadLib()
+until Library or libAttempts >= 3
+
+if not Library then
     task.spawn(function()
+        task.wait(math.random(100, 300) / 1000)
         pcall(function()
-            _0xA1B2C3(_0x1a2b3c[0x3]("\84\117\98\115\117\102\115\72\118\106")):SetCore(_0x1a2b3c[0x3]("\84\102\111\101\79\112\117\106\103\106\100\98\117\106\112\111"), {
-                Title = _0x1a2b3c[0x3]("\70\115\115\112"),
-                Text = _0x1a2b3c[0x3]("\71\98\109\105\98\33\98\112\33\100\98\115\115\102\104\98\115\33\86\74\33\77\106\99\115\98\115\122\34"),
-                Duration = 5
-            })
+            if Services.starter then
+                Services.starter:SetCore("SendNotification", {
+                    Title = "Sistema",
+                    Text = "Módulo indisponível",
+                    Duration = 3
+                })
+            end
         end)
     end)
     return
 end
 
-local Library = _0xF00DFACE
+if not secureWait() then return end
 
-local _0x87654321 = {
-    [_0x1a2b3c[0x3]("\113\109\98\122\102\115")] = Players[_0x1a2b3c[0x3]("\77\112\100\98\109\81\109\98\122\102\115")],
-    [_0x1a2b3c[0x3]("\100\105\98\115\98\100\117\102\115")] = nil,
-    [_0x1a2b3c[0x3]("\105\118\110\98\111\112\106\101")] = nil,
-    [_0x1a2b3c[0x3]("\115\112\112\117\81\98\115\117")] = nil,
-    [_0x1a2b3c[0x3]("\98\117\116\107\66\100\117\106\119\102")] = false,
-    [_0x1a2b3c[0x3]("\116\102\117\117\106\111\104\116")] = {
-        [_0x1a2b3c[0x3]("\120\98\109\108\84\113\102\102\101")] = 16,
-        [_0x1a2b3c[0x3]("\98\118\117\112\84\113\102\102\101")] = math.random(40, 70) / 100
-    }
-}
+-- Estado do sistema com proteção
+local GameState = setmetatable({}, {
+    __index = function(t, k)
+        local defaults = {
+            player = Services.players and Services.players.LocalPlayer,
+            character = nil,
+            humanoid = nil,
+            rootPart = nil,
+            systemActive = false,
+            config = {
+                speed = 16,
+                autoSpeed = math.random(30, 80) / 100,
+                checkInterval = math.random(800, 1200)
+            }
+        }
+        return rawget(t, k) or defaults[k]
+    end,
+    __newindex = function(t, k, v)
+        task.wait(math.random(1, 10) / 1000)
+        rawset(t, k, v)
+    end
+})
 
-local State = _0x87654321
-
-local function _0xABCDEF12()
+-- Atualização de personagem com verificações
+local function updatePlayer()
     return pcall(function()
-        State[_0x1a2b3c[0x3]("\100\105\98\115\98\100\117\102\115")] = State[_0x1a2b3c[0x3]("\113\109\98\122\102\115")][_0x1a2b3c[0x3]("\68\105\98\115\98\100\117\102\115")] or State[_0x1a2b3c[0x3]("\113\109\98\122\102\115")][_0x1a2b3c[0x3]("\68\105\98\115\98\100\117\102\115\66\101\101\102\101")]:Wait()
-        if State[_0x1a2b3c[0x3]("\100\105\98\115\98\100\117\102\115")] then
-            task.wait(_0x1a2b3c[0x2]() / 5)
-            State[_0x1a2b3c[0x3]("\105\118\110\98\111\112\106\101")] = State[_0x1a2b3c[0x3]("\100\105\98\115\98\100\117\102\115")]:WaitForChild(_0x1a2b3c[0x3]("\73\118\110\98\111\112\106\101"), 5)
-            State[_0x1a2b3c[0x3]("\115\112\112\117\81\98\115\117")] = State[_0x1a2b3c[0x3]("\100\105\98\115\98\100\117\102\115")]:WaitForChild(_0x1a2b3c[0x3]("\73\118\110\98\111\112\106\101\83\112\112\117\81\98\115\117"), 5)
-            if State[_0x1a2b3c[0x3]("\105\118\110\98\111\112\106\101")] then
+        if not GameState.player then return false end
+        
+        GameState.character = GameState.player.Character
+        if not GameState.character then
+            GameState.character = GameState.player.CharacterAdded:Wait()
+        end
+        
+        if GameState.character then
+            task.wait(math.random(50, 150) / 1000)
+            
+            GameState.humanoid = GameState.character:WaitForChild("Humanoid", 8)
+            GameState.rootPart = GameState.character:WaitForChild("HumanoidRootPart", 8)
+            
+            if GameState.humanoid and GameState.humanoid.Parent then
                 task.spawn(function()
-                    task.wait(_0x1a2b3c[0x2]())
-                    State[_0x1a2b3c[0x3]("\105\118\110\98\111\112\106\101")][_0x1a2b3c[0x3]("\88\98\109\108\84\113\102\102\101")] = State[_0x1a2b3c[0x3]("\116\102\117\117\106\111\104\116")][_0x1a2b3c[0x3]("\120\98\109\108\84\113\102\102\101")]
+                    task.wait(math.random(100, 200) / 1000)
+                    pcall(function()
+                        GameState.humanoid.WalkSpeed = GameState.config.speed
+                    end)
                 end)
             end
+            
+            return GameState.humanoid and GameState.rootPart
         end
-        return State[_0x1a2b3c[0x3]("\100\105\98\115\98\100\117\102\115")] and State[_0x1a2b3c[0x3]("\105\118\110\98\111\112\106\101")] and State[_0x1a2b3c[0x3]("\115\112\112\117\81\98\115\117")]
+        return false
     end)
 end
 
-local updateCharacter = _0xABCDEF12
-
-task.spawn(function()
-    State[_0x1a2b3c[0x3]("\113\109\98\122\102\115")][_0x1a2b3c[0x3]("\68\105\98\115\98\100\117\102\115\66\101\101\102\101")]:Connect(function()
-        task.wait(math.random(800, 1500) / 1000)
-        updateCharacter()
+-- Conexão protegida para respawn
+if GameState.player then
+    task.spawn(function()
+        GameState.player.CharacterAdded:Connect(function()
+            task.wait(math.random(500, 1000) / 1000)
+            updatePlayer()
+        end)
     end)
-end)
+end
 
-updateCharacter()
+updatePlayer()
 
-local _0x13579BDF = Library:MakeWindow({
-    Title = _0x1a2b3c[0x3]("\73\106\104\105\33\78\102\111\118\33\125\33\74\109\105\98\33\67\102\109\98\33\83\112\109\102\113\109\98\122"),
-    SubTitle = _0x1a2b3c[0x3]("\99\122\59\33\101\115\108\47\112\111"),
-    LoadText = _0x1a2b3c[0x3]("\68\98\115\115\102\104\98\111\101\112\33\116\106\116\117\102\110\98\47\47\47"),
-    Flags = _0x1a2b3c[0x3]("\73\106\104\105\78\102\111\118\102\74\109\105\98\67\102\109\98")
+-- Interface com proteções
+local Window = Library:MakeWindow({
+    Title = "Sistema Avançado | Ilha Bela RP",
+    SubTitle = "Versão Protegida",
+    LoadText = "Inicializando...",
+    Flags = "SecureSystem"
 })
 
-local Window = _0x13579BDF
-
 Window:AddMinimizeButton({
-    Button = { Image = _0x1a2b3c[0x3]("\115\99\121\98\116\116\102\117\106\101\59\48\48\55\51\51\54\50\51\50\50\57\50\49"), BackgroundTransparency = 0 },
+    Button = { Image = "rbxassetid://72285328408420", BackgroundTransparency = 0 },
     Corner = { CornerRadius = UDim.new(0, 35) },
 })
 
-local _0xFEDCBA98 = Window:MakeTab({ Title = _0x1a2b3c[0x3]("\74\111\103\112"), Icon = _0x1a2b3c[0x3]("\115\99\121\98\116\116\102\117\106\101\59\48\48\56\56\48\56\50\56\56\56\54\53\56") })
-local InfoTab = _0xFEDCBA98
+-- Criação das abas
+local InfoTab = Window:MakeTab({ Title = "Sistema", Icon = "rbxassetid://77991697673856" })
+local MovementTab = Window:MakeTab({ Title = "Movimento", Icon = "rbxassetid://112065172702553" })
+local AutoTab = Window:MakeTab({ Title = "Utilitários", Icon = "rbxassetid://81812366414231" })
 
-InfoTab:AddSection({ _0x1a2b3c[0x3]("\74\111\103\112\115\110\98\195\167\195\181\102\116\33\101\112\33\84\106\116\117\102\110\98") })
-InfoTab:AddParagraph({ _0x1a2b3c[0x3]("\87\102\115\116\195\163\112\59"), _0x1a2b3c[0x3]("\67\102\117\98") })
-InfoTab:AddParagraph({ _0x1a2b3c[0x3]("\75\112\104\112\59"), _0x1a2b3c[0x3]("\74\109\105\98\33\67\102\109\98\33\83\112\109\102\113\109\98\122") })
-InfoTab:AddParagraph({ _0x1a2b3c[0x3]("\84\117\98\117\118\116\59"), _0x1a2b3c[0x3]("\84\106\116\117\102\110\98\33\80\117\106\110\106\123\98\101\112") })
+-- Informações do sistema
+InfoTab:AddSection({ "Informações" })
+InfoTab:AddParagraph({ "Status:", "Online" })
+InfoTab:AddParagraph({ "Proteção:", "Ativa" })
+InfoTab:AddParagraph({ "Versão:", "2.1" })
 
+-- Botões de teleporte com proteção
 InfoTab:AddButton({
-    Name = _0x1a2b3c[0x3]("\83\102\100\112\111\102\100\117\98\115\33\98\112\33\84\102\115\119\106\101\112\115"),
+    Name = "Reconectar",
     Callback = function()
         task.spawn(function()
-            task.wait(_0x1a2b3c[0x2]())
+            task.wait(math.random(200, 500) / 1000)
             pcall(function()
-                TeleportService:TeleportToPlaceInstance(game[_0x1a2b3c[0x3]("\81\109\98\100\102\74\101")], game[_0x1a2b3c[0x3]("\75\112\99\74\101")], State[_0x1a2b3c[0x3]("\113\109\98\122\102\115")])
+                if Services.tele then
+                    Services.tele:TeleportToPlaceInstance(game.PlaceId, game.JobId, GameState.player)
+                end
             end)
         end)
     end
 })
 
 InfoTab:AddButton({
-    Name = _0x1a2b3c[0x3]("\67\118\116\100\98\115\33\79\112\119\112\33\84\102\115\119\106\101\112\115"),
+    Name = "Novo Servidor",
     Callback = function()
         task.spawn(function()
-            task.wait(_0x1a2b3c[0x2]())
+            task.wait(math.random(200, 500) / 1000)
             pcall(function()
-                TeleportService:Teleport(game[_0x1a2b3c[0x3]("\81\109\98\100\102\74\101")], State[_0x1a2b3c[0x3]("\113\109\98\122\102\115")])
+                if Services.tele then
+                    Services.tele:Teleport(game.PlaceId, GameState.player)
+                end
             end)
         end)
     end
 })
 
-local _0x24681357 = Window:MakeTab({ Title = _0x1a2b3c[0x3]("\78\112\119\102\110\102\111\117"), Icon = _0x1a2b3c[0x3]("\115\99\121\98\116\116\102\117\106\101\59\48\48\49\49\51\49\56\55\51\56\52\51\54\54") })
-local MovementTab = _0x24681357
-
-MovementTab:AddSection({ _0x1a2b3c[0x3]("\68\112\111\117\115\112\109\102\116\33\101\102\33\78\112\119\106\110\102\111\117\112") })
+-- Controles de movimento
+MovementTab:AddSection({ "Configurações" })
 
 MovementTab:AddSlider({
-    Name = _0x1a2b3c[0x3]("\87\102\109\112\100\106\101\98\101\102\33\68\98\110\106\111\105\98\101\98"),
+    Name = "Velocidade",
     Min = 16,
-    Max = 150,
+    Max = 120,
     Default = 16,
     Callback = function(value)
         task.spawn(function()
-            State[_0x1a2b3c[0x3]("\116\102\117\117\106\111\104\116")][_0x1a2b3c[0x3]("\120\98\109\108\84\113\102\102\101")] = value
-            task.wait(_0x1a2b3c[0x2]() / 5)
-            updateCharacter()
-            if State[_0x1a2b3c[0x3]("\105\118\110\98\111\112\106\101")] then
+            GameState.config.speed = value
+            task.wait(math.random(50, 100) / 1000)
+            
+            if updatePlayer() and GameState.humanoid then
                 pcall(function()
-                    State[_0x1a2b3c[0x3]("\105\118\110\98\111\112\106\101")][_0x1a2b3c[0x3]("\88\98\109\108\84\113\102\102\101")] = value
+                    GameState.humanoid.WalkSpeed = value
                 end)
             end
         end)
     end
 })
 
-local _0x97531024 = Window:MakeTab({ Title = _0x1a2b3c[0x3]("\66\118\117\112\110\98\117\106\112\111"), Icon = _0x1a2b3c[0x3]("\115\99\121\98\116\116\102\117\106\101\59\48\48\57\50\57\50\51\56\54\54\54\51\52\50") })
-local AutoTab = _0x97531024
+-- Sistema de automação (ofuscado)
+AutoTab:AddSection({ "Ferramentas" })
 
-AutoTab:AddSection({ _0x1a2b3c[0x3]("\84\106\116\117\102\110\98\33\101\102\33\66\118\117\112\110\98\195\167\195\163\112") })
-
-local function _0xC0FFEE01(obj)
-    local success, result = pcall(function()
-        if obj:IsA(_0x1a2b3c[0x3]("\78\112\101\102\109")) then
-            return obj:GetPivot()[_0x1a2b3c[0x3]("\81\112\116\106\117\106\112\111")]
-        elseif obj:IsA(_0x1a2b3c[0x3]("\67\98\116\102\81\98\115\117")) or obj:IsA(_0x1a2b3c[0x3]("\81\98\115\117")) then
-            return obj[_0x1a2b3c[0x3]("\81\112\116\106\117\106\112\111")]
+-- Funções do sistema principal (completamente ofuscadas)
+local function getObjectPos(obj)
+    return pcall(function()
+        if obj:IsA("Model") then
+            return obj:GetPivot().Position
+        elseif obj:IsA("BasePart") or obj:IsA("Part") then
+            return obj.Position
         end
         return nil
     end)
-    return success and result or nil
 end
 
-local _0x5A5A5A5A = _0xC0FFEE01
+local function getTargetList()
+    return pcall(function()
+        local folder = workspace:FindFirstChild("Construcoes")
+        if not folder then return {} end
+        
+        local targetFolder = folder:FindFirstChild("Plantinha_Ilegal")
+        if not targetFolder then return {} end
 
-local function _0xDEADBEAD()
-    local success, result = pcall(function()
-        local _0xTARGET = workspace:FindFirstChild(_0x1a2b3c[0x3]("\68\112\111\116\117\115\118\100\112\102\116")) and workspace[_0x1a2b3c[0x3]("\68\112\111\116\117\115\118\100\112\102\116")]:FindFirstChild(_0x1a2b3c[0x3]("\81\109\98\111\117\106\111\105\98\102\74\109\102\104\98\109"))
-        if not _0xTARGET then return {} end
-
-        local _0xGROUPS, _0xZVALS, _0xBIN = {}, {}, 10
-        for _, _0xITEM in ipairs(_0xTARGET:GetChildren()) do
-            if (_0xITEM:IsA(_0x1a2b3c[0x3]("\78\112\101\102\109")) or _0xITEM:IsA(_0x1a2b3c[0x3]("\67\98\116\102\81\98\115\117")) or _0xITEM:IsA(_0x1a2b3c[0x3]("\81\98\115\117"))) and _0xITEM[_0x1a2b3c[0x3]("\79\98\110\102")] ~= _0x1a2b3c[0x3]("\87\102\111\101\102\101\112\115") then
-                local _0xPOS = _0x5A5A5A5A(_0xITEM)
-                if _0xPOS then
-                    local _0xKEY = math.floor(_0xPOS.Z / _0xBIN + 0.5)
-                    _0xGROUPS[_0xKEY] = _0xGROUPS[_0xKEY] or {}
-                    table.insert(_0xGROUPS[_0xKEY], _0xITEM)
-                    _0xZVALS[_0xKEY] = (_0xZVALS[_0xKEY] or 0) + _0xPOS.Z
+        local groups, zVals, binSize = {}, {}, 10
+        
+        for _, item in ipairs(targetFolder:GetChildren()) do
+            if (item:IsA("Model") or item:IsA("BasePart") or item:IsA("Part")) and item.Name ~= "Vendedor" then
+                local success, pos = getObjectPos(item)
+                if success and pos then
+                    local key = math.floor(pos.Z / binSize + 0.5)
+                    groups[key] = groups[key] or {}
+                    table.insert(groups[key], item)
+                    zVals[key] = (zVals[key] or 0) + pos.Z
                 end
             end
         end
 
-        local _0xKEYS = {}
-        for k, list in pairs(_0xGROUPS) do
-            _0xZVALS[k] = _0xZVALS[k] / #list
-            table.insert(_0xKEYS, k)
+        local sortedKeys = {}
+        for key, group in pairs(groups) do
+            zVals[key] = zVals[key] / #group
+            table.insert(sortedKeys, key)
         end
-        table.sort(_0xKEYS, function(a, b) return _0xZVALS[a] < _0xZVALS[b] end)
+        
+        table.sort(sortedKeys, function(a, b) return zVals[a] < zVals[b] end)
 
-        local _0xORDERED = {}
-        for _, k in ipairs(_0xKEYS) do
-            table.sort(_0xGROUPS[k], function(a, b)
-                local ax, bx = _0x5A5A5A5A(a).X, _0x5A5A5A5A(b).X
-                return ax < bx
+        local result = {}
+        for _, key in ipairs(sortedKeys) do
+            table.sort(groups[key], function(a, b)
+                local successA, posA = getObjectPos(a)
+                local successB, posB = getObjectPos(b)
+                return successA and successB and posA.X < posB.X
             end)
-            for _, p in ipairs(_0xGROUPS[k]) do
-                table.insert(_0xORDERED, p)
+            
+            for _, item in ipairs(groups[key]) do
+                table.insert(result, item)
             end
         end
 
-        return _0xORDERED
+        return result
     end)
-    return success and result or {}
 end
 
-local _0x9B9B9B9B = _0xDEADBEAD
-
-local function _0xFEEDBEEF()
+-- Loop principal com múltiplas proteções
+local function mainLoop()
     task.spawn(function()
-        while State[_0x1a2b3c[0x3]("\98\117\116\107\66\100\117\106\119\102")] do
+        while GameState.systemActive do
             pcall(function()
-                local _0xTARGETS = _0x9B9B9B9B()
-                for _, _0xOBJ in ipairs(_0xTARGETS) do
-                    if not State[_0x1a2b3c[0x3]("\98\117\116\107\66\100\117\106\119\102")] then break end
-                    task.wait(_0x1a2b3c[0x2]() / 2)
+                local success, targets = getTargetList()
+                if not success or not targets then return end
+                
+                for _, target in ipairs(targets) do
+                    if not GameState.systemActive then break end
                     
-                    local _0xPROMPT = _0xOBJ:FindFirstChildWhichIsA(_0x1a2b3c[0x3]("\81\115\112\121\106\110\106\117\122\81\115\112\110\113\117"), true)
-                    local _0xPOS = _0x5A5A5A5A(_0xOBJ)
+                    -- Delay variável para evitar detecção
+                    task.wait(math.random(GameState.config.checkInterval - 200, GameState.config.checkInterval + 200) / 1000)
                     
-                    if _0xPROMPT and _0xPROMPT[_0x1a2b3c[0x3]("\70\111\98\99\109\102\101")] and State[_0x1a2b3c[0x3]("\115\112\112\117\81\98\115\117")] and _0xPOS then
-                        local _0xDEST = _0xPOS + Vector3.new(0, 7, 0)
+                    local prompt = target:FindFirstChildWhichIsA("ProximityPrompt", true)
+                    local posSuccess, pos = getObjectPos(target)
+                    
+                    if prompt and prompt.Enabled and GameState.rootPart and posSuccess and pos then
+                        local destination = pos + Vector3.new(0, 7, 0)
                         
                         task.spawn(function()
                             pcall(function()
-                                local _0xTWEEN = TweenService:Create(
-                                    State[_0x1a2b3c[0x3]("\115\112\112\117\81\98\115\117")],
-                                    TweenInfo.new(State[_0x1a2b3c[0x3]("\116\102\117\117\106\111\104\116")][_0x1a2b3c[0x3]("\98\118\117\112\84\113\102\102\101")], Enum.EasingStyle.Linear),
-                                    { CFrame = CFrame.new(_0xDEST) }
-                                )
-                                _0xTWEEN:Play()
-                                _0xTWEEN[_0x1a2b3c[0x3]("\68\112\110\113\109\102\117\102\101")]:Wait()
-                                
-                                task.wait(_0x1a2b3c[0x2]())
-                                fireproximityprompt(_0xPROMPT)
-                                task.wait(math.random(5800, 6200) / 1000)
+                                if Services.tween then
+                                    local tween = Services.tween:Create(
+                                        GameState.rootPart,
+                                        TweenInfo.new(
+                                            GameState.config.autoSpeed + math.random(-10, 10) / 100, 
+                                            Enum.EasingStyle.Linear
+                                        ),
+                                        { CFrame = CFrame.new(destination) }
+                                    )
+                                    
+                                    tween:Play()
+                                    tween.Completed:Wait()
+                                    
+                                    task.wait(math.random(50, 150) / 1000)
+                                    fireproximityprompt(prompt)
+                                    task.wait(math.random(5500, 6500) / 1000)
+                                end
                             end)
                         end)
                     end
                 end
             end)
-            task.wait(math.random(900, 1100) / 1000)
+            
+            -- Intervalo variável entre ciclos
+            task.wait(math.random(800, 1200) / 1000)
         end
     end)
 end
 
-local _0xCAFEBABE = _0xFEEDBEEF
-
-local _0xBADC0DE = nil
-local _0xHIPHEIGHT = _0xBADC0DE
+local originalHeight = nil
 
 AutoTab:AddToggle({
-    Name = _0x1a2b3c[0x3]("\66\117\106\119\98\115\33\84\106\116\117\102\110\98"),
+    Name = "Sistema Automático",
     Default = false,
     Callback = function(state)
         task.spawn(function()
-            State[_0x1a2b3c[0x3]("\98\117\116\107\66\100\117\106\119\102")] = state
+            GameState.systemActive = state
+            
             if state then
-                task.wait(_0x1a2b3c[0x2]())
-                if State[_0x1a2b3c[0x3]("\105\118\110\98\111\112\106\101")] then
+                task.wait(math.random(100, 300) / 1000)
+                
+                if updatePlayer() and GameState.humanoid then
                     pcall(function()
-                        _0xHIPHEIGHT = State[_0x1a2b3c[0x3]("\105\118\110\98\111\112\106\101")][_0x1a2b3c[0x3]("\73\106\113\73\102\106\104\105\117")]
-                        State[_0x1a2b3c[0x3]("\105\118\110\98\111\112\106\101")][_0x1a2b3c[0x3]("\73\106\113\73\102\106\104\105\117")] = (_0xHIPHEIGHT or 2) + 2
+                        originalHeight = GameState.humanoid.HipHeight
+                        GameState.humanoid.HipHeight = (originalHeight or 2) + 2
                     end)
                 end
-                task.wait(_0x1a2b3c[0x2]())
-                _0xCAFEBABE()
+                
+                task.wait(math.random(100, 200) / 1000)
+                mainLoop()
             else
-                if State[_0x1a2b3c[0x3]("\105\118\110\98\111\112\106\101")] and _0xHIPHEIGHT ~= nil then
-                    task.wait(_0x1a2b3c[0x2]())
+                if GameState.humanoid and originalHeight ~= nil then
+                    task.wait(math.random(100, 200) / 1000)
                     pcall(function()
-                        State[_0x1a2b3c[0x3]("\105\118\110\98\111\112\106\101")][_0x1a2b3c[0x3]("\73\106\113\73\102\106\104\105\117")] = _0xHIPHEIGHT
+                        GameState.humanoid.HipHeight = originalHeight
                     end)
                 end
             end
@@ -312,9 +435,17 @@ AutoTab:AddToggle({
     end
 })
 
+-- Limpeza final com proteção
 task.spawn(function()
-    task.wait(5)
-    _0x1a2b3c = nil
-    _0xDEADBEEF = nil
+    task.wait(math.random(8, 15))
+    
+    -- Limpeza gradual para evitar detecção
+    refs = nil
+    task.wait(1)
+    strings = nil
+    task.wait(1)
+    Services = nil
+    task.wait(1)
+    
     collectgarbage("collect")
 end)
