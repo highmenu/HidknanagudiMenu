@@ -1,331 +1,320 @@
--- Ultra Advanced Obfuscated Script - Military Grade Protection
--- All functionality preserved with maximum security layers
-
-local function _0xA1B2C3D4(...) local t={...} return function(i) return t[i] end end
-local function _0xE5F6G7H8(s,k) local r="" for i=1,#s do r=r..string.char((s:byte(i)-32+k)%95+32) end return r end
-local function _0xI9J0K1L2(t,k) local r={} for i,v in pairs(t) do r[_0xE5F6G7H8(i,k)]=v end return r end
-local function _0xM3N4O5P6(f) return function(...) return f(...) end end
-local function _0xQ7R8S9T0(n) return tostring(n):reverse() end
-local function _0xU1V2W3X4(s) return s:gsub("(%d+)",function(n) return string.char(tonumber(n)) end) end
-local function _0xY5Z6A7B8(x,y) return x~y end
-local function _0xC9D0E1F2(t) local r={} for i=#t,1,-1 do r[#r+1]=t[i] end return r end
-local function _0xG3H4I5J6(s,p) return s:find(p) and true or false end
-
-local _0xDEADBEEF = {
-    ["\x31"] = "80108108101114115",
-    ["\x32"] = "85115101114073110112117116083101114118105099101",
-    ["\x33"] = "82117110083101114118105099101",
-    ["\x34"] = "84101108101112111114116083101114118105099101",
-    ["\x35"] = "84119101101110083101114118105099101",
-    ["\x36"] = "119111114107115112097099101",
-    ["\x37"] = "103097109101",
-    ["\x38"] = "71101116083101114118105099101",
-    ["\x39"] = "70097108108101110080097114116115068101115116114111121072101105103104116",
-    ["\x41"] = "76111099097108080108097121101114",
-    ["\x42"] = "67104097114097099116101114",
-    ["\x43"] = "67104097114097099116101114065100100101100",
-    ["\x44"] = "87097105116",
-    ["\x45"] = "72117109097110111105100",
-    ["\x46"] = "87097105116070111114067104105108100",
-    ["\x47"] = "72117109097110111105100082111111116080097114116",
-    ["\x48"] = "87097108107083112101101100",
-    ["\x49"] = "67111110110101099116",
-    ["\x4A"] = "116097115107",
-    ["\x4B"] = "119097105116",
-    ["\x4C"] = "108111097100115116114105110103",
-    ["\x4D"] = "72116116112071101116",
-    ["\x4E"] = "104116116112115058047047114097119046103105116104117098117115101114099111110116101110116046099111109047116098097111049052051047076105098114097114121045117105047114101102115047104101097100115047109097105110047082101100122104117098117105",
-    ["\x4F"] = "112099097108108",
-    ["\x50"] = "83116097114116101114071117105",
-    ["\x51"] = "83101116067111114101",
-    ["\x52"] = "83101110100078111116105102105099097116105111110",
-    ["\x53"] = "84105116108101",
-    ["\x54"] = "69114114111",
-    ["\x55"] = "84101120116",
-    ["\x56"] = "70097108104097032097111032099097114114101103097114032085073032076105098114097114121033",
-    ["\x57"] = "68117114097116105111110",
-    ["\x58"] = "114101116117114110",
-    ["\x59"] = "77097107101087105110100111119",
-    ["\x5A"] = "72105103104032077101110117032124032073108104097032066101108097032082111108101112108097121",
-    ["\x61"] = "83117098084105116108101",
-    ["\x62"] = "098121058032100114107046111110",
-    ["\x63"] = "76111097100084101120116",
-    ["\x64"] = "67097114114101103097110100111032115105115116101109097046046046",
-    ["\x65"] = "70108097103115",
-    ["\x66"] = "72105103104077101110117095073108104097066101108097",
-    ["\x67"] = "65100100077105110105109105122101066117116116111110",
-    ["\x68"] = "66117116116111110",
-    ["\x69"] = "73109097103101",
-    ["\x6A"] = "114098120097115115101116105100058047047055050050056053051050056052048056052050048",
-    ["\x6B"] = "66097099107103114111117110100084114097110115112097114101110099121",
-    ["\x6C"] = "67111114110101114",
-    ["\x6D"] = "67111114110101114082097100105117115",
-    ["\x6E"] = "85068105109",
-    ["\x6F"] = "110101119",
-    ["\x70"] = "77097107101084097098",
-    ["\x71"] = "73110102111",
-    ["\x72"] = "73099111110",
-    ["\x73"] = "114098120097115115101116105100058047047056056057057049054057055054055051057053054",
-    ["\x74"] = "65100100083101099116105111110",
-    ["\x75"] = "73110102111114109097195167195181101115032100111032083105115116101109097",
-    ["\x76"] = "65100100080097114097103114097112104",
-    ["\x77"] = "86101114115195163111058",
-    ["\x78"] = "66101116097",
-    ["\x79"] = "74111103111058",
-    ["\x7A"] = "73108104097032066101108097032082111108101112108097121",
-    ["\x21"] = "83116097116117115058",
-    ["\x22"] = "83105115116101109097032079116105109105122097100111",
-    ["\x23"] = "65100100066117116116111110",
-    ["\x24"] = "78097109101",
-    ["\x25"] = "82101099111110101099116097114032097111032083101114118105100111114",
-    ["\x26"] = "67097108108098097099107",
-    ["\x27"] = "84101108101112111114116084111080108097099101073110115116097110099101",
-    ["\x28"] = "80108097099101073100",
-    ["\x29"] = "74111098073100",
-    ["\x2A"] = "66117115099097114032078111118111032083101114118105100111114",
-    ["\x2B"] = "84101108101112111114116",
-    ["\x2C"] = "77111118101109101110116",
-    ["\x2D"] = "114098120097115115101116105100058047047049049050048054053049055050055048050053053051",
-    ["\x2E"] = "67111110116114111108115032100101032077111118105109101110116111",
-    ["\x2F"] = "65100100083108105100101114",
-    ["\x30"] = "86101108111099105100097100101032067097109105110104097100097"
+-- [Proteção de Script Avançada]
+local _0x1a2b3c = {
+    [0x1] = function(n) return string.char(n) end,
+    [0x2] = function() return math.random(50, 150) / 1000 end,
+    [0x3] = function(s) local r = "" for i = 1, #s do r = r .. string.char(s:byte(i) - 1) end return r end,
+    [0x4] = setmetatable({}, {__mode = "kv"}),
+    [0x5] = {}
 }
 
-local _0xCAFEBABE = {}
-for k,v in pairs(_0xDEADBEEF) do
-    _0xCAFEBABE[k] = _0xU1V2W3X4(v)
+local function _0xA1B2C3(n)
+    if not _0x1a2b3c[0x5][n] then
+        task.wait(_0x1a2b3c[0x2]() / 10)
+        _0x1a2b3c[0x5][n] = game:GetService(n)
+    end
+    return _0x1a2b3c[0x5][n]
 end
 
-local function _0x1337BEEF(k) return _0xCAFEBABE[k] or "" end
+local _0xDEADBEEF = {
+    ["\80\108\97\121\101\114\115"] = _0xA1B2C3(_0x1a2b3c[0x3]("\81\109\98\122\102\115\116")),
+    ["\85\115\101\114\73\110\112\117\116\83\101\114\118\105\99\101"] = _0xA1B2C3(_0x1a2b3c[0x3]("\86\116\102\115\74\111\113\118\117\84\102\115\119\106\100\102")),
+    ["\82\117\110\83\101\114\118\105\99\101"] = _0xA1B2C3(_0x1a2b3c[0x3]("\83\118\111\84\102\115\119\106\100\102")),
+    ["\84\101\108\101\112\111\114\116\83\101\114\118\105\99\101"] = _0xA1B2C3(_0x1a2b3c[0x3]("\85\102\109\102\113\112\115\117\84\102\115\119\106\100\102")),
+    ["\84\119\101\101\110\83\101\114\118\105\99\101"] = _0xA1B2C3(_0x1a2b3c[0x3]("\85\120\102\102\111\84\102\115\119\106\100\102"))
+}
 
-local _0xAAAA1111 = getfenv()
-local _0xBBBB2222 = _0xAAAA1111[_0x1337BEEF("\x37")]
-local _0xCCCC3333 = _0xBBBB2222[_0x1337BEEF("\x38")](_0x1337BEEF("\x31"))
-local _0xDDDD4444 = _0xBBBB2222[_0x1337BEEF("\x38")](_0x1337BEEF("\x32"))
-local _0xEEEE5555 = _0xBBBB2222[_0x1337BEEF("\x38")](_0x1337BEEF("\x33"))
-local _0xFFFF6666 = _0xBBBB2222[_0x1337BEEF("\x38")](_0x1337BEEF("\x34"))
-local _0x11117777 = _0xBBBB2222[_0x1337BEEF("\x38")](_0x1337BEEF("\x35"))
+local Players = _0xDEADBEEF["\80\108\97\121\101\114\115"]
+local UserInputService = _0xDEADBEEF["\85\115\101\114\73\110\112\117\116\83\101\114\118\105\99\101"]
+local RunService = _0xDEADBEEF["\82\117\110\83\101\114\118\105\99\101"]
+local TeleportService = _0xDEADBEEF["\84\101\108\101\112\111\114\116\83\101\114\118\105\99\101"]
+local TweenService = _0xDEADBEEF["\84\119\101\101\110\83\101\114\118\105\99\101"]
 
-_0xAAAA1111[_0x1337BEEF("\x36")][_0x1337BEEF("\x39")] = -_0xAAAA1111.math.huge
-
-local _0x22228888
-local _0x33339999 = pcall
-_0x33339999(function()
-    _0x22228888 = _0xAAAA1111[_0x1337BEEF("\x4C")](_0xBBBB2222[_0x1337BEEF("\x4D")](_0x1337BEEF("\x4E")))()
+task.spawn(function()
+    task.wait(_0x1a2b3c[0x2]())
+    pcall(function()
+        workspace[_0x1a2b3c[0x3]("\71\98\109\109\102\111\81\98\115\117\116\69\102\116\117\115\112\122\73\102\106\104\105\117")] = -math.huge
+    end)
 end)
 
-if not _0x22228888 then
-    _0xBBBB2222[_0x1337BEEF("\x38")](_0x1337BEEF("\x50"))[_0x1337BEEF("\x51")](_0x1337BEEF("\x52"), {
-        [_0x1337BEEF("\x53")] = _0x1337BEEF("\x54"),
-        [_0x1337BEEF("\x55")] = _0x1337BEEF("\x56"),
-        [_0x1337BEEF("\x57")] = 5
-    })
+local _0xF00DFACE
+local _0x12345678 = 0
+
+repeat
+    _0x12345678 = _0x12345678 + 1
+    task.wait(_0x1a2b3c[0x2]())
+    pcall(function()
+        local _0xURL = "\104\116\116\112\115\58\47\47\114\97\119\46\103\105\116\104\117\98\117\115\101\114\99\111\110\116\101\110\116\46\99\111\109\47\116\98\97\111\49\52\51\47\76\105\98\114\97\114\121\45\117\105\47\114\101\102\115\47\104\101\97\100\115\47\109\97\105\110\47\82\101\100\122\104\117\98\117\105"
+        local _0xREQ = game:HttpGet(_0xURL)
+        if _0xREQ then
+            _0xF00DFACE = loadstring(_0xREQ)()
+        end
+    end)
+until _0xF00DFACE or _0x12345678 >= 3
+
+if not _0xF00DFACE then
+    task.spawn(function()
+        pcall(function()
+            _0xA1B2C3(_0x1a2b3c[0x3]("\84\117\98\115\117\102\115\72\118\106")):SetCore(_0x1a2b3c[0x3]("\84\102\111\101\79\112\117\106\103\106\100\98\117\106\112\111"), {
+                Title = _0x1a2b3c[0x3]("\70\115\115\112"),
+                Text = _0x1a2b3c[0x3]("\71\98\109\105\98\33\98\112\33\100\98\115\115\102\104\98\115\33\86\74\33\77\106\99\115\98\115\122\34"),
+                Duration = 5
+            })
+        end)
+    end)
     return
 end
 
-local _0x44440000 = {
-    [_0xE5F6G7H8("player",13)] = _0xCCCC3333[_0x1337BEEF("\x41")],
-    [_0xE5F6G7H8("character",13)] = nil,
-    [_0xE5F6G7H8("humanoid",13)] = nil,
-    [_0xE5F6G7H8("rootPart",13)] = nil,
-    [_0xE5F6G7H8("farmActive",13)] = false,
-    [_0xE5F6G7H8("settings",13)] = {
-        [_0xE5F6G7H8("walkSpeed",13)] = 16,
-        [_0xE5F6G7H8("flySpeed",13)] = 0.5
+local Library = _0xF00DFACE
+
+local _0x87654321 = {
+    [_0x1a2b3c[0x3]("\113\109\98\122\102\115")] = Players[_0x1a2b3c[0x3]("\77\112\100\98\109\81\109\98\122\102\115")],
+    [_0x1a2b3c[0x3]("\100\105\98\115\98\100\117\102\115")] = nil,
+    [_0x1a2b3c[0x3]("\105\118\110\98\111\112\106\101")] = nil,
+    [_0x1a2b3c[0x3]("\115\112\112\117\81\98\115\117")] = nil,
+    [_0x1a2b3c[0x3]("\98\117\116\107\66\100\117\106\119\102")] = false,
+    [_0x1a2b3c[0x3]("\116\102\117\117\106\111\104\116")] = {
+        [_0x1a2b3c[0x3]("\120\98\109\108\84\113\102\102\101")] = 16,
+        [_0x1a2b3c[0x3]("\98\118\117\112\84\113\102\102\101")] = math.random(40, 70) / 100
     }
 }
 
-local _0x5555AAAA = _0xM3N4O5P6(function()
-    _0x44440000[_0xE5F6G7H8("character",13)] = _0x44440000[_0xE5F6G7H8("player",13)][_0x1337BEEF("\x42")] or _0x44440000[_0xE5F6G7H8("player",13)][_0x1337BEEF("\x43")]:Wait()
-    if _0x44440000[_0xE5F6G7H8("character",13)] then
-        _0x44440000[_0xE5F6G7H8("humanoid",13)] = _0x44440000[_0xE5F6G7H8("character",13)][_0x1337BEEF("\x46")](_0x1337BEEF("\x45"), 5)
-        _0x44440000[_0xE5F6G7H8("rootPart",13)] = _0x44440000[_0xE5F6G7H8("character",13)][_0x1337BEEF("\x46")](_0x1337BEEF("\x47"), 5)
-        if _0x44440000[_0xE5F6G7H8("humanoid",13)] then
-            _0x44440000[_0xE5F6G7H8("humanoid",13)][_0x1337BEEF("\x48")] = _0x44440000[_0xE5F6G7H8("settings",13)][_0xE5F6G7H8("walkSpeed",13)]
+local State = _0x87654321
+
+local function _0xABCDEF12()
+    return pcall(function()
+        State[_0x1a2b3c[0x3]("\100\105\98\115\98\100\117\102\115")] = State[_0x1a2b3c[0x3]("\113\109\98\122\102\115")][_0x1a2b3c[0x3]("\68\105\98\115\98\100\117\102\115")] or State[_0x1a2b3c[0x3]("\113\109\98\122\102\115")][_0x1a2b3c[0x3]("\68\105\98\115\98\100\117\102\115\66\101\101\102\101")]:Wait()
+        if State[_0x1a2b3c[0x3]("\100\105\98\115\98\100\117\102\115")] then
+            task.wait(_0x1a2b3c[0x2]() / 5)
+            State[_0x1a2b3c[0x3]("\105\118\110\98\111\112\106\101")] = State[_0x1a2b3c[0x3]("\100\105\98\115\98\100\117\102\115")]:WaitForChild(_0x1a2b3c[0x3]("\73\118\110\98\111\112\106\101"), 5)
+            State[_0x1a2b3c[0x3]("\115\112\112\117\81\98\115\117")] = State[_0x1a2b3c[0x3]("\100\105\98\115\98\100\117\102\115")]:WaitForChild(_0x1a2b3c[0x3]("\73\118\110\98\111\112\106\101\83\112\112\117\81\98\115\117"), 5)
+            if State[_0x1a2b3c[0x3]("\105\118\110\98\111\112\106\101")] then
+                task.spawn(function()
+                    task.wait(_0x1a2b3c[0x2]())
+                    State[_0x1a2b3c[0x3]("\105\118\110\98\111\112\106\101")][_0x1a2b3c[0x3]("\88\98\109\108\84\113\102\102\101")] = State[_0x1a2b3c[0x3]("\116\102\117\117\106\111\104\116")][_0x1a2b3c[0x3]("\120\98\109\108\84\113\102\102\101")]
+                end)
+            end
         end
+        return State[_0x1a2b3c[0x3]("\100\105\98\115\98\100\117\102\115")] and State[_0x1a2b3c[0x3]("\105\118\110\98\111\112\106\101")] and State[_0x1a2b3c[0x3]("\115\112\112\117\81\98\115\117")]
+    end)
+end
+
+local updateCharacter = _0xABCDEF12
+
+task.spawn(function()
+    State[_0x1a2b3c[0x3]("\113\109\98\122\102\115")][_0x1a2b3c[0x3]("\68\105\98\115\98\100\117\102\115\66\101\101\102\101")]:Connect(function()
+        task.wait(math.random(800, 1500) / 1000)
+        updateCharacter()
+    end)
+end)
+
+updateCharacter()
+
+local _0x13579BDF = Library:MakeWindow({
+    Title = _0x1a2b3c[0x3]("\73\106\104\105\33\78\102\111\118\33\125\33\74\109\105\98\33\67\102\109\98\33\83\112\109\102\113\109\98\122"),
+    SubTitle = _0x1a2b3c[0x3]("\99\122\59\33\101\115\108\47\112\111"),
+    LoadText = _0x1a2b3c[0x3]("\68\98\115\115\102\104\98\111\101\112\33\116\106\116\117\102\110\98\47\47\47"),
+    Flags = _0x1a2b3c[0x3]("\73\106\104\105\78\102\111\118\102\74\109\105\98\67\102\109\98")
+})
+
+local Window = _0x13579BDF
+
+Window:AddMinimizeButton({
+    Button = { Image = _0x1a2b3c[0x3]("\115\99\121\98\116\116\102\117\106\101\59\48\48\55\51\51\54\50\51\50\50\57\50\49"), BackgroundTransparency = 0 },
+    Corner = { CornerRadius = UDim.new(0, 35) },
+})
+
+local _0xFEDCBA98 = Window:MakeTab({ Title = _0x1a2b3c[0x3]("\74\111\103\112"), Icon = _0x1a2b3c[0x3]("\115\99\121\98\116\116\102\117\106\101\59\48\48\56\56\48\56\50\56\56\56\54\53\56") })
+local InfoTab = _0xFEDCBA98
+
+InfoTab:AddSection({ _0x1a2b3c[0x3]("\74\111\103\112\115\110\98\195\167\195\181\102\116\33\101\112\33\84\106\116\117\102\110\98") })
+InfoTab:AddParagraph({ _0x1a2b3c[0x3]("\87\102\115\116\195\163\112\59"), _0x1a2b3c[0x3]("\67\102\117\98") })
+InfoTab:AddParagraph({ _0x1a2b3c[0x3]("\75\112\104\112\59"), _0x1a2b3c[0x3]("\74\109\105\98\33\67\102\109\98\33\83\112\109\102\113\109\98\122") })
+InfoTab:AddParagraph({ _0x1a2b3c[0x3]("\84\117\98\117\118\116\59"), _0x1a2b3c[0x3]("\84\106\116\117\102\110\98\33\80\117\106\110\106\123\98\101\112") })
+
+InfoTab:AddButton({
+    Name = _0x1a2b3c[0x3]("\83\102\100\112\111\102\100\117\98\115\33\98\112\33\84\102\115\119\106\101\112\115"),
+    Callback = function()
+        task.spawn(function()
+            task.wait(_0x1a2b3c[0x2]())
+            pcall(function()
+                TeleportService:TeleportToPlaceInstance(game[_0x1a2b3c[0x3]("\81\109\98\100\102\74\101")], game[_0x1a2b3c[0x3]("\75\112\99\74\101")], State[_0x1a2b3c[0x3]("\113\109\98\122\102\115")])
+            end)
+        end)
     end
-    return _0x44440000[_0xE5F6G7H8("character",13)] and _0x44440000[_0xE5F6G7H8("humanoid",13)] and _0x44440000[_0xE5F6G7H8("rootPart",13)]
-end)
-
-_0x44440000[_0xE5F6G7H8("player",13)][_0x1337BEEF("\x43")][_0x1337BEEF("\x49")](function()
-    _0xAAAA1111[_0x1337BEEF("\x4A")][_0x1337BEEF("\x4B")](1)
-    _0x5555AAAA()
-end)
-
-_0x5555AAAA()
-
-local _0x6666BBBB = _0x22228888[_0x1337BEEF("\x59")]({
-    [_0x1337BEEF("\x53")] = _0x1337BEEF("\x5A"),
-    [_0x1337BEEF("\x61")] = _0x1337BEEF("\x62"),
-    [_0x1337BEEF("\x63")] = _0x1337BEEF("\x64"),
-    [_0x1337BEEF("\x65")] = _0x1337BEEF("\x66")
 })
 
-_0x6666BBBB[_0x1337BEEF("\x67")]({
-    [_0x1337BEEF("\x68")] = { 
-        [_0x1337BEEF("\x69")] = _0x1337BEEF("\x6A"), 
-        [_0x1337BEEF("\x6B")] = 0 
-    },
-    [_0x1337BEEF("\x6C")] = { 
-        [_0x1337BEEF("\x6D")] = UDim.new(0, 35) 
-    },
-})
-
-local _0x7777CCCC = _0x6666BBBB[_0x1337BEEF("\x70")]({ 
-    [_0x1337BEEF("\x53")] = _0x1337BEEF("\x71"), 
-    [_0x1337BEEF("\x72")] = _0x1337BEEF("\x73") 
-})
-
-_0x7777CCCC[_0x1337BEEF("\x74")]({ _0x1337BEEF("\x75") })
-_0x7777CCCC[_0x1337BEEF("\x76")]({ _0x1337BEEF("\x77"), _0x1337BEEF("\x78") })
-_0x7777CCCC[_0x1337BEEF("\x76")]({ _0x1337BEEF("\x79"), _0x1337BEEF("\x7A") })
-_0x7777CCCC[_0x1337BEEF("\x76")]({ _0x1337BEEF("\x21"), _0x1337BEEF("\x22") })
-
-local _0x8888DDDD = _0xM3N4O5P6(function()
-    return _0xFFFF6666[_0x1337BEEF("\x27")](_0xBBBB2222.PlaceId, _0xBBBB2222.JobId, _0x44440000[_0xE5F6G7H8("player",13)])
-end)
-
-local _0x9999EEEE = _0xM3N4O5P6(function()
-    return _0xFFFF6666[_0x1337BEEF("\x2B")](_0xBBBB2222.PlaceId, _0x44440000[_0xE5F6G7H8("player",13)])
-end)
-
-_0x7777CCCC[_0x1337BEEF("\x23")]({
-    [_0x1337BEEF("\x24")] = _0x1337BEEF("\x25"),
-    [_0x1337BEEF("\x26")] = _0x8888DDDD
-})
-
-_0x7777CCCC[_0x1337BEEF("\x23")]({
-    [_0x1337BEEF("\x24")] = _0x1337BEEF("\x2A"),
-    [_0x1337BEEF("\x26")] = _0x9999EEEE
-})
-
-local _0x0000FFFF = _0x6666BBBB[_0x1337BEEF("\x70")]({ 
-    [_0x1337BEEF("\x53")] = _0x1337BEEF("\x2C"), 
-    [_0x1337BEEF("\x72")] = _0x1337BEEF("\x2D") 
-})
-
-_0x0000FFFF[_0x1337BEEF("\x74")]({ _0x1337BEEF("\x2E") })
-
-local _0xAAAAFFFF = _0xM3N4O5P6(function(value)
-    _0x44440000[_0xE5F6G7H8("settings",13)][_0xE5F6G7H8("walkSpeed",13)] = value
-    _0x5555AAAA()
-    if _0x44440000[_0xE5F6G7H8("humanoid",13)] then
-        _0x44440000[_0xE5F6G7H8("humanoid",13)][_0x1337BEEF("\x48")] = value
+InfoTab:AddButton({
+    Name = _0x1a2b3c[0x3]("\67\118\116\100\98\115\33\79\112\119\112\33\84\102\115\119\106\101\112\115"),
+    Callback = function()
+        task.spawn(function()
+            task.wait(_0x1a2b3c[0x2]())
+            pcall(function()
+                TeleportService:Teleport(game[_0x1a2b3c[0x3]("\81\109\98\100\102\74\101")], State[_0x1a2b3c[0x3]("\113\109\98\122\102\115")])
+            end)
+        end)
     end
-end)
+})
 
-_0x0000FFFF[_0x1337BEEF("\x2F")]({
-    [_0x1337BEEF("\x24")] = _0x1337BEEF("\x30"),
+local _0x24681357 = Window:MakeTab({ Title = _0x1a2b3c[0x3]("\78\112\119\102\110\102\111\117"), Icon = _0x1a2b3c[0x3]("\115\99\121\98\116\116\102\117\106\101\59\48\48\49\49\51\49\56\55\51\56\52\51\54\54") })
+local MovementTab = _0x24681357
+
+MovementTab:AddSection({ _0x1a2b3c[0x3]("\68\112\111\117\115\112\109\102\116\33\101\102\33\78\112\119\106\110\102\111\117\112") })
+
+MovementTab:AddSlider({
+    Name = _0x1a2b3c[0x3]("\87\102\109\112\100\106\101\98\101\102\33\68\98\110\106\111\105\98\101\98"),
     Min = 16,
     Max = 150,
     Default = 16,
-    [_0x1337BEEF("\x26")] = _0xAAAAFFFF
-})
-
-local _0x9C7A5E2B = _0x6666BBBB[_0x1337BEEF("\x70")]({ 
-    [_0x1337BEEF("\x53")] = _0xU1V2W3X4("65117116111109097116105111110"), 
-    [_0x1337BEEF("\x72")] = _0xU1V2W3X4("114098120097115115101116105100058047047056049056049050051054054052049052050051049") 
-})
-
-_0x9C7A5E2B[_0x1337BEEF("\x74")]({ _0xU1V2W3X4("082101115111117114099101032079112116105109105122097116105111110032077097110097103101114") })
-
-local function _0x3E8F2D1A(x) 
-    local _0x7B4C9E6A = x
-    if _0x7B4C9E6A[_0xU1V2W3X4("73115065")](_0xU1V2W3X4("77111100101108")) then
-        return _0x7B4C9E6A[_0xU1V2W3X4("71101116080105118111116")]()[_0xU1V2W3X4("80111115105116105111110")]
-    elseif _0x7B4C9E6A[_0xU1V2W3X4("73115065")](_0xU1V2W3X4("66097115101080097114116")) or _0x7B4C9E6A[_0xU1V2W3X4("73115065")](_0xU1V2W3X4("80097114116")) then
-        return _0x7B4C9E6A[_0xU1V2W3X4("80111115105116105111110")]
+    Callback = function(value)
+        task.spawn(function()
+            State[_0x1a2b3c[0x3]("\116\102\117\117\106\111\104\116")][_0x1a2b3c[0x3]("\120\98\109\108\84\113\102\102\101")] = value
+            task.wait(_0x1a2b3c[0x2]() / 5)
+            updateCharacter()
+            if State[_0x1a2b3c[0x3]("\105\118\110\98\111\112\106\101")] then
+                pcall(function()
+                    State[_0x1a2b3c[0x3]("\105\118\110\98\111\112\106\101")][_0x1a2b3c[0x3]("\88\98\109\108\84\113\102\102\101")] = value
+                end)
+            end
+        end)
     end
-    return nil
+})
+
+local _0x97531024 = Window:MakeTab({ Title = _0x1a2b3c[0x3]("\66\118\117\112\110\98\117\106\112\111"), Icon = _0x1a2b3c[0x3]("\115\99\121\98\116\116\102\117\106\101\59\48\48\57\50\57\50\51\56\54\54\54\51\52\50") })
+local AutoTab = _0x97531024
+
+AutoTab:AddSection({ _0x1a2b3c[0x3]("\84\106\116\117\102\110\98\33\101\102\33\66\118\117\112\110\98\195\167\195\163\112") })
+
+local function _0xC0FFEE01(obj)
+    local success, result = pcall(function()
+        if obj:IsA(_0x1a2b3c[0x3]("\78\112\101\102\109")) then
+            return obj:GetPivot()[_0x1a2b3c[0x3]("\81\112\116\106\117\106\112\111")]
+        elseif obj:IsA(_0x1a2b3c[0x3]("\67\98\116\102\81\98\115\117")) or obj:IsA(_0x1a2b3c[0x3]("\81\98\115\117")) then
+            return obj[_0x1a2b3c[0x3]("\81\112\116\106\117\106\112\111")]
+        end
+        return nil
+    end)
+    return success and result or nil
 end
 
-local _0x5F2E1C9D = _0xM3N4O5P6(function()
-    local _0x8A6B4F3E = _0xAAAA1111[_0x1337BEEF("\x36")][_0xU1V2W3X4("70105110100070105114115116067104105108100")](_0xU1V2W3X4("67111110115116114117099111101115")) and _0xAAAA1111[_0x1337BEEF("\x36")][_0xU1V2W3X4("67111110115116114117099111101115")][_0xU1V2W3X4("70105110100070105114115116067104105108100")](_0xU1V2W3X4("80108097110116105110104097095073108101103097108"))
-    if not _0x8A6B4F3E then return {} end
+local _0x5A5A5A5A = _0xC0FFEE01
 
-    local _0x2D9E7A5B, _0x6F1C8B4A, _0x4E7D2A9B = {}, {}, 10
-    for _, _0x1B8F6E3C in _0xAAAA1111.ipairs(_0x8A6B4F3E[_0xU1V2W3X4("71101116067104105108100114101110")]()) do
-        if (_0x1B8F6E3C[_0xU1V2W3X4("73115065")](_0xU1V2W3X4("77111100101108")) or _0x1B8F6E3C[_0xU1V2W3X4("73115065")](_0xU1V2W3X4("66097115101080097114116")) or _0x1B8F6E3C[_0xU1V2W3X4("73115065")](_0xU1V2W3X4("80097114116"))) and _0x1B8F6E3C[_0xU1V2W3X4("78097109101")] ~= _0xU1V2W3X4("86101110100101100111114") then
-            local _0x9A5E2F1D = _0x3E8F2D1A(_0x1B8F6E3C)
-            if _0x9A5E2F1D then
-                local _0x7C4B8F6E = _0xAAAA1111.math[_0xU1V2W3X4("102108111111114")](_0x9A5E2F1D.Z / _0x4E7D2A9B + 0.5)
-                _0x2D9E7A5B[_0x7C4B8F6E] = _0x2D9E7A5B[_0x7C4B8F6E] or {}
-                _0xAAAA1111.table[_0xU1V2W3X4("105110115101114116")](_0x2D9E7A5B[_0x7C4B8F6E], _0x1B8F6E3C)
-                _0x6F1C8B4A[_0x7C4B8F6E] = (_0x6F1C8B4A[_0x7C4B8F6E] or 0) + _0x9A5E2F1D.Z
+local function _0xDEADBEAD()
+    local success, result = pcall(function()
+        local _0xTARGET = workspace:FindFirstChild(_0x1a2b3c[0x3]("\68\112\111\116\117\115\118\100\112\102\116")) and workspace[_0x1a2b3c[0x3]("\68\112\111\116\117\115\118\100\112\102\116")]:FindFirstChild(_0x1a2b3c[0x3]("\81\109\98\111\117\106\111\105\98\102\74\109\102\104\98\109"))
+        if not _0xTARGET then return {} end
+
+        local _0xGROUPS, _0xZVALS, _0xBIN = {}, {}, 10
+        for _, _0xITEM in ipairs(_0xTARGET:GetChildren()) do
+            if (_0xITEM:IsA(_0x1a2b3c[0x3]("\78\112\101\102\109")) or _0xITEM:IsA(_0x1a2b3c[0x3]("\67\98\116\102\81\98\115\117")) or _0xITEM:IsA(_0x1a2b3c[0x3]("\81\98\115\117"))) and _0xITEM[_0x1a2b3c[0x3]("\79\98\110\102")] ~= _0x1a2b3c[0x3]("\87\102\111\101\102\101\112\115") then
+                local _0xPOS = _0x5A5A5A5A(_0xITEM)
+                if _0xPOS then
+                    local _0xKEY = math.floor(_0xPOS.Z / _0xBIN + 0.5)
+                    _0xGROUPS[_0xKEY] = _0xGROUPS[_0xKEY] or {}
+                    table.insert(_0xGROUPS[_0xKEY], _0xITEM)
+                    _0xZVALS[_0xKEY] = (_0xZVALS[_0xKEY] or 0) + _0xPOS.Z
+                end
             end
         end
-    end
 
-    local _0x3F8E1B7C = {}
-    for _0x5A2F9D6E, _0x8B4E7C1A in _0xAAAA1111.pairs(_0x2D9E7A5B) do
-        _0x6F1C8B4A[_0x5A2F9D6E] = _0x6F1C8B4A[_0x5A2F9D6E] / #_0x8B4E7C1A
-        _0xAAAA1111.table[_0xU1V2W3X4("105110115101114116")](_0x3F8E1B7C, _0x5A2F9D6E)
-    end
-    _0xAAAA1111.table[_0xU1V2W3X4("115111114116")](_0x3F8E1B7C, function(_0x1E9A6F3B, _0x7D2C5A8E) return _0x6F1C8B4A[_0x1E9A6F3B] < _0x6F1C8B4A[_0x7D2C5A8E] end)
-
-    local _0x9E6B3F1C = {}
-    for _, _0x4A7D1E9B in _0xAAAA1111.ipairs(_0x3F8E1B7C) do
-        _0xAAAA1111.table[_0xU1V2W3X4("115111114116")](_0x2D9E7A5B[_0x4A7D1E9B], function(_0x2F8C5A1D, _0x6E1B9A4F)
-            local _0x8D3E7A2B, _0x5C9F2E8A = _0x3E8F2D1A(_0x2F8C5A1D).X, _0x3E8F2D1A(_0x6E1B9A4F).X
-            return _0x8D3E7A2B < _0x5C9F2E8A
-        end)
-        for _, _0x1A6F3E9D in _0xAAAA1111.ipairs(_0x2D9E7A5B[_0x4A7D1E9B]) do
-            _0xAAAA1111.table[_0xU1V2W3X4("105110115101114116")](_0x9E6B3F1C, _0x1A6F3E9D)
+        local _0xKEYS = {}
+        for k, list in pairs(_0xGROUPS) do
+            _0xZVALS[k] = _0xZVALS[k] / #list
+            table.insert(_0xKEYS, k)
         end
-    end
+        table.sort(_0xKEYS, function(a, b) return _0xZVALS[a] < _0xZVALS[b] end)
 
-    return _0x9E6B3F1C
-end)
+        local _0xORDERED = {}
+        for _, k in ipairs(_0xKEYS) do
+            table.sort(_0xGROUPS[k], function(a, b)
+                local ax, bx = _0x5A5A5A5A(a).X, _0x5A5A5A5A(b).X
+                return ax < bx
+            end)
+            for _, p in ipairs(_0xGROUPS[k]) do
+                table.insert(_0xORDERED, p)
+            end
+        end
 
-local _0x7A1E4F9C = _0xM3N4O5P6(function()
-    while _0x44440000[_0xE5F6G7H8(_0xU1V2W3X4("97117116111082101115111117114099101065099116105118101"),13)] do
-        _0x33339999(function()
-            local _0x4B8E2A7F = _0x5F2E1C9D()
-            for _, _0x3C7F1B6E in _0xAAAA1111.ipairs(_0x4B8E2A7F) do
-                if not _0x44440000[_0xE5F6G7H8(_0xU1V2W3X4("97117116111082101115111117114099101065099116105118101"),13)] then break end
-                local _0x9D6A3F2E = _0x3C7F1B6E[_0xU1V2W3X4("70105110100070105114115116067104105108100087104105099104073115065")](_0xU1V2W3X4("80114111120105109105116121080114111109112116"), true)
-                local _0x5E8A1C7F = _0x3E8F2D1A(_0x3C7F1B6E)
-                if _0x9D6A3F2E and _0x9D6A3F2E[_0xU1V2W3X4("69110097098108101100")] and _0x44440000[_0xE5F6G7H8(_0xU1V2W3X4("114111111116080097114116"),13)] and _0x5E8A1C7F then
-                    local _0x2F9C4E7A = _0x5E8A1C7F + _0xAAAA1111[_0xU1V2W3X4("86101099116111114051")][_0xU1V2W3X4("110101119")](0, 7, 0)
-                    local _0x8B1F6A3D = _0x11117777[_0xU1V2W3X4("67114101097116101")](
-                        _0x44440000[_0xE5F6G7H8(_0xU1V2W3X4("114111111116080097114116"),13)],
-                        _0xAAAA1111[_0xU1V2W3X4("84119101101110073110102111")][_0xU1V2W3X4("110101119")](_0x44440000[_0xE5F6G7H8(_0xU1V2W3X4("115101116116105110103115"),13)][_0xE5F6G7H8(_0xU1V2W3X4("102108121083112101101100"),13)], _0xAAAA1111.Enum[_0xU1V2W3X4("69097115105110103083116121108101")][_0xU1V2W3X4("76105110101097114")]),
-                        { [_0xU1V2W3X4("67070114097109101")] = _0xAAAA1111[_0xU1V2W3X4("67070114097109101")][_0xU1V2W3X4("110101119")](_0x2F9C4E7A) }
-                    )
-                    _0x8B1F6A3D[_0xU1V2W3X4("80108097121")]()
-                    _0x8B1F6A3D[_0xU1V2W3X4("67111109112108101116101100")][_0x1337BEEF("\x44")]()
-                    _0xAAAA1111[_0xU1V2W3X4("102105114101112114111120105109105116121112114111109112116")](_0x9D6A3F2E)
-                    _0xAAAA1111[_0x1337BEEF("\x4A")][_0x1337BEEF("\x4B")](6)
+        return _0xORDERED
+    end)
+    return success and result or {}
+end
+
+local _0x9B9B9B9B = _0xDEADBEAD
+
+local function _0xFEEDBEEF()
+    task.spawn(function()
+        while State[_0x1a2b3c[0x3]("\98\117\116\107\66\100\117\106\119\102")] do
+            pcall(function()
+                local _0xTARGETS = _0x9B9B9B9B()
+                for _, _0xOBJ in ipairs(_0xTARGETS) do
+                    if not State[_0x1a2b3c[0x3]("\98\117\116\107\66\100\117\106\119\102")] then break end
+                    task.wait(_0x1a2b3c[0x2]() / 2)
+                    
+                    local _0xPROMPT = _0xOBJ:FindFirstChildWhichIsA(_0x1a2b3c[0x3]("\81\115\112\121\106\110\106\117\122\81\115\112\110\113\117"), true)
+                    local _0xPOS = _0x5A5A5A5A(_0xOBJ)
+                    
+                    if _0xPROMPT and _0xPROMPT[_0x1a2b3c[0x3]("\70\111\98\99\109\102\101")] and State[_0x1a2b3c[0x3]("\115\112\112\117\81\98\115\117")] and _0xPOS then
+                        local _0xDEST = _0xPOS + Vector3.new(0, 7, 0)
+                        
+                        task.spawn(function()
+                            pcall(function()
+                                local _0xTWEEN = TweenService:Create(
+                                    State[_0x1a2b3c[0x3]("\115\112\112\117\81\98\115\117")],
+                                    TweenInfo.new(State[_0x1a2b3c[0x3]("\116\102\117\117\106\111\104\116")][_0x1a2b3c[0x3]("\98\118\117\112\84\113\102\102\101")], Enum.EasingStyle.Linear),
+                                    { CFrame = CFrame.new(_0xDEST) }
+                                )
+                                _0xTWEEN:Play()
+                                _0xTWEEN[_0x1a2b3c[0x3]("\68\112\110\113\109\102\117\102\101")]:Wait()
+                                
+                                task.wait(_0x1a2b3c[0x2]())
+                                fireproximityprompt(_0xPROMPT)
+                                task.wait(math.random(5800, 6200) / 1000)
+                            end)
+                        end)
+                    end
+                end
+            end)
+            task.wait(math.random(900, 1100) / 1000)
+        end
+    end)
+end
+
+local _0xCAFEBABE = _0xFEEDBEEF
+
+local _0xBADC0DE = nil
+local _0xHIPHEIGHT = _0xBADC0DE
+
+AutoTab:AddToggle({
+    Name = _0x1a2b3c[0x3]("\66\117\106\119\98\115\33\84\106\116\117\102\110\98"),
+    Default = false,
+    Callback = function(state)
+        task.spawn(function()
+            State[_0x1a2b3c[0x3]("\98\117\116\107\66\100\117\106\119\102")] = state
+            if state then
+                task.wait(_0x1a2b3c[0x2]())
+                if State[_0x1a2b3c[0x3]("\105\118\110\98\111\112\106\101")] then
+                    pcall(function()
+                        _0xHIPHEIGHT = State[_0x1a2b3c[0x3]("\105\118\110\98\111\112\106\101")][_0x1a2b3c[0x3]("\73\106\113\73\102\106\104\105\117")]
+                        State[_0x1a2b3c[0x3]("\105\118\110\98\111\112\106\101")][_0x1a2b3c[0x3]("\73\106\113\73\102\106\104\105\117")] = (_0xHIPHEIGHT or 2) + 2
+                    end)
+                end
+                task.wait(_0x1a2b3c[0x2]())
+                _0xCAFEBABE()
+            else
+                if State[_0x1a2b3c[0x3]("\105\118\110\98\111\112\106\101")] and _0xHIPHEIGHT ~= nil then
+                    task.wait(_0x1a2b3c[0x2]())
+                    pcall(function()
+                        State[_0x1a2b3c[0x3]("\105\118\110\98\111\112\106\101")][_0x1a2b3c[0x3]("\73\106\113\73\102\106\104\105\117")] = _0xHIPHEIGHT
+                    end)
                 end
             end
         end)
-        _0xAAAA1111[_0x1337BEEF("\x4A")][_0x1337BEEF("\x4B")](1)
     end
-end)
-
-local _0xE4A7F2C9
-
-local _0x6D2B8F5A = _0xM3N4O5P6(function(_0xA9E3C7F1)
-    _0x44440000[_0xE5F6G7H8(_0xU1V2W3X4("97117116111082101115111117114099101065099116105118101"),13)] = _0xA9E3C7F1
-    if _0xA9E3C7F1 then
-        if _0x44440000[_0xE5F6G7H8(_0xU1V2W3X4("104117109097110111105100"),13)] then
-            _0xE4A7F2C9 = _0x44440000[_0xE5F6G7H8(_0xU1V2W3X4("104117109097110111105100"),13)][_0xU1V2W3X4("72105112072101105103104116")]
-            _0x33339999(function()
-                _0x44440000[_0xE5F6G7H8(_0xU1V2W3X4("104117109097110111105100"),13)][_0xU1V2W3X4("72105112072101105103104116")] = (_0xE4A7F2C9 or 2) + 2
-            end)
-        end
-        _0xAAAA1111[_0x1337BEEF("\x4A")][_0xU1V2W3X4("115112097119110")](_0x7A1E4F9C)
-    else
-        if _0x44440000[_0xE5F6G7H8(_0xU1V2W3X4("104117109097110111105100"),13)] and _0xE4A7F2C9 ~= nil then
-            _0x33339999(function()
-                _0x44440000[_0xE5F6G7H8(_0xU1V2W3X4("104117109097110111105100"),13)][_0xU1V2W3X4("72105112072101105103104116")] = _0xE4A7F2C9
-            end)
-        end
-    end
-end)
-
-_0x9C7A5E2B[_0xU1V2W3X4("65100100084111103103108101")]({
-    [_0xU1V2W3X4("78097109101")] = _0xU1V2W3X4("082101115111117114099101032077097110097103101114"),
-    [_0xU1V2W3X4("68101102097117108116")] = false,
-    [_0xU1V2W3X4("67097108108098097099107")] = _0x6D2B8F5A
 })
+
+task.spawn(function()
+    task.wait(5)
+    _0x1a2b3c = nil
+    _0xDEADBEEF = nil
+    collectgarbage("collect")
+end)
